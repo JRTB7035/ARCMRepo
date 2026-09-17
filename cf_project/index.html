@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Data &amp; Reporting Project — Seamless-Integration.Ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7F6;
+    --surface:#FFFFFF;
+    --navy:#0C2D48;
+    --navy-ink:#16212B;
+    --teal:#0F6E56;
+    --teal-soft:#E3F1EC;
+    --slate:#64707A;
+    --slate-soft:#ECEEEC;
+    --line:#DFE3E1;
+    --amber:#B7791F;
+    --amber-soft:#FBF0DE;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--navy-ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:720px;
+    margin:0 auto;
+    padding:48px 24px 80px;
+  }
+  .brand{
+    font-family:'Inter',sans-serif;
+    font-weight:700;
+    font-size:13px;
+    letter-spacing:0.04em;
+    color:var(--navy);
+    margin-bottom:18px;
+  }
+  .brand::before{
+    content:"";
+    display:inline-block;
+    width:9px;
+    height:9px;
+    border-radius:2px;
+    background:var(--teal);
+    margin-right:9px;
+    vertical-align:middle;
+  }
+  .rule{
+    height:2px;
+    background:linear-gradient(90deg, var(--teal), var(--line) 55%);
+    margin-bottom:36px;
+  }
+  h1{
+    font-family:'Fraunces', Georgia, serif;
+    font-weight:600;
+    font-size:clamp(28px, 5vw, 38px);
+    line-height:1.15;
+    margin:0 0 10px;
+    color:var(--navy);
+    letter-spacing:-0.01em;
+  }
+  .subhead{
+    font-size:16.5px;
+    color:var(--slate);
+    margin:0 0 28px;
+    max-width:52ch;
+  }
+  .intro{
+    font-size:16px;
+    color:var(--navy-ink);
+    max-width:64ch;
+    margin:0 0 36px;
+  }
+
+  /* Progress rail */
+  .progress{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:40px;
+  }
+  .progress-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:12px;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .progress-label{
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--navy-ink);
+  }
+  .progress-count{
+    font-family:'Fraunces', serif;
+    font-size:14px;
+    color:var(--teal);
+    font-weight:600;
+  }
+  .progress-track{
+    display:flex;
+    gap:5px;
+  }
+  .progress-seg{
+    flex:1;
+    height:7px;
+    border-radius:4px;
+    background:var(--slate-soft);
+    overflow:hidden;
+  }
+  .progress-seg .fill{
+    height:100%;
+    width:0%;
+    background:var(--teal);
+    border-radius:4px;
+    transition:width 900ms cubic-bezier(.4,0,.2,1);
+  }
+
+  /* Timeline */
+  .timeline{
+    position:relative;
+  }
+  .phase{
+    position:relative;
+    display:flex;
+    gap:18px;
+  }
+  .rail{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex:0 0 auto;
+  }
+  .node{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--navy);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:15px;
+    flex-shrink:0;
+    z-index:1;
+  }
+  .phase.upcoming .node{
+    background:var(--surface);
+    border:2px solid var(--slate-soft);
+    color:var(--slate);
+  }
+  .phase.complete .node{
+    background:var(--teal);
+  }
+  .connector{
+    flex:1;
+    width:2px;
+    background:var(--line);
+    margin:2px 0;
+  }
+  .phase.complete .connector{
+    background:var(--teal);
+  }
+  .phase:last-child .connector{display:none;}
+
+  .card{
+    flex:1;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .phase-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    background:none;
+    border:none;
+    padding:16px 18px;
+    cursor:pointer;
+    text-align:left;
+    font-family:inherit;
+  }
+  .phase-btn:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:-2px;
+  }
+  .title-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+    min-width:0;
+  }
+  .phase-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    color:var(--navy-ink);
+  }
+  .chip{
+    font-size:11.5px;
+    font-weight:600;
+    padding:4px 10px;
+    border-radius:20px;
+    white-space:nowrap;
+    flex-shrink:0;
+    border:none;
+    font-family:inherit;
+  }
+  .chip.in-progress{background:var(--teal-soft); color:var(--teal);}
+  .chip.upcoming{background:var(--slate-soft); color:var(--slate);}
+  .chip.complete{background:var(--teal); color:#fff;}
+
+  body.edit-mode .chip{
+    cursor:pointer;
+    outline:1.5px dashed var(--navy);
+    outline-offset:2px;
+  }
+  body.edit-mode .chip:hover{
+    filter:brightness(0.95);
+  }
+
+  .chevron{
+    flex-shrink:0;
+    width:18px;
+    height:18px;
+    color:var(--slate);
+    transition:transform 260ms ease;
+  }
+  .phase-btn[aria-expanded="true"] .chevron{
+    transform:rotate(180deg);
+  }
+
+  .panel{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows 320ms ease;
+  }
+  .panel-inner{
+    overflow:hidden;
+  }
+  .phase-btn[aria-expanded="true"] + .panel{
+    grid-template-rows:1fr;
+  }
+  .panel-content{
+    padding:0 18px 20px 18px;
+    border-top:1px solid var(--line);
+    padding-top:16px;
+  }
+  .panel-section{
+    margin-bottom:14px;
+  }
+  .panel-section:last-child{margin-bottom:0;}
+  .panel-label{
+    font-size:12px;
+    font-weight:600;
+    color:var(--teal);
+    margin-bottom:7px;
+  }
+  .phase.upcoming .panel-label{color:var(--slate);}
+  .phase.complete .panel-label{color:var(--teal);}
+  .panel-list{
+    margin:0;
+    padding-left:18px;
+    font-size:14.5px;
+    color:var(--navy-ink);
+  }
+  .panel-list li{margin-bottom:4px;}
+  .panel-why{
+    font-size:14.5px;
+    color:var(--slate);
+    margin:0;
+  }
+  .waiting-box{
+    background:var(--amber-soft);
+    border-left:3px solid var(--amber);
+    border-radius:6px;
+    padding:11px 14px;
+    margin-top:2px;
+  }
+  .waiting-box .panel-label{color:var(--amber); margin-bottom:5px;}
+  .waiting-box .panel-list{margin:0; padding-left:18px;}
+
+  /* Callout */
+  .callout{
+    margin-top:36px;
+    background:var(--amber-soft);
+    border-left:3px solid var(--amber);
+    border-radius:8px;
+    padding:18px 20px;
+  }
+  .callout h2{
+    font-family:'Fraunces', serif;
+    font-size:17px;
+    font-weight:600;
+    color:var(--navy);
+    margin:0 0 8px;
+  }
+  .callout p{
+    font-size:15px;
+    color:var(--navy-ink);
+    margin:0;
+    max-width:60ch;
+  }
+
+  .footer-note{
+    margin-top:32px;
+    font-size:14px;
+    color:var(--slate);
+    font-style:italic;
+  }
+
+  .admin-bar{
+    margin-top:28px;
+    padding-top:18px;
+    border-top:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .admin-toggle{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border:none;
+    padding:4px 0;
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    color:var(--slate);
+    cursor:pointer;
+    text-decoration:underline;
+    text-decoration-color:var(--line);
+    text-underline-offset:3px;
+  }
+  .admin-toggle:hover{color:var(--navy);}
+  .admin-toggle:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+  .admin-toggle svg{width:13px;height:13px;flex-shrink:0;}
+
+  .export-btn{
+    display:none;
+    align-items:center;
+    gap:7px;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    border-radius:7px;
+    padding:8px 14px;
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .export-btn:hover{background:#0a2338;}
+  body.edit-mode .export-btn{display:inline-flex;}
+
+  .edit-hint{
+    display:none;
+    font-size:12.5px;
+    color:var(--teal);
+    background:var(--teal-soft);
+    padding:8px 14px;
+    border-radius:7px;
+    width:100%;
+  }
+  body.edit-mode .edit-hint{display:block;}
+
+  .save-status{
+    font-size:12.5px;
+    margin:0;
+    min-height:16px;
+  }
+  .save-status.ok{color:var(--teal);}
+  .save-status.err{color:#B7791F;}
+
+  @media (max-width:480px){
+    .wrap{padding:32px 16px 60px;}
+    .node{width:30px;height:30px;font-size:13.5px;}
+    .phase-title{font-size:16px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .progress-seg .fill{transition:none;}
+    .chevron{transition:none;}
+    .panel{transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">SEAMLESS-INTEGRATION.AI</div>
+  <div class="rule"></div>
+
+  <h1>Your Data &amp; Reporting Project</h1>
+  <p class="subhead">A plain-language guide to how we get your reporting up and running.</p>
+  <p class="intro">This project connects your AdvancedMD system to a set of secure, easy-to-read dashboards — giving your team a clear, at-a-glance view of billing and collections performance. Tap any step below for more detail on what it involves.</p>
+
+  <div class="progress">
+    <div class="progress-top">
+      <span class="progress-label">Project status</span>
+      <span class="progress-count" id="progress-count"></span>
+    </div>
+    <div class="progress-track" id="progress-track"></div>
+  </div>
+
+  <div class="timeline" id="phase-list"></div>
+
+  <div class="callout">
+    <h2>What we need from you right now</h2>
+    <p>Two things are currently standing between us and the next phase: the signed data security agreement, and your IT team setting up the server and granting us access. Once both are in place, the connection test and remaining setup steps move quickly.</p>
+  </div>
+
+  <p class="footer-note">Questions at any point? Reach out — we're happy to walk through where things stand.</p>
+
+  <div class="admin-bar">
+    <button class="admin-toggle" id="admin-toggle" type="button">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.5 3.5L16.5 6.5L7 16H4V13L13.5 3.5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+      <span id="admin-toggle-label">Update project status</span>
+    </button>
+    <button class="export-btn" id="save-btn" type="button">Save changes</button>
+    <p class="edit-hint">Click any status label below to cycle through Upcoming → In Progress → Complete, then Save. Changes go live for anyone viewing this page — no re-upload needed.</p>
+    <p class="save-status" id="save-status"></p>
+  </div>
+
+</div>
+
+<script>
+/* PHASES_START */
+const phases = [
+  {
+    num: 1,
+    title: "Security & Access Setup",
+    status: "in-progress",
+    involves: [
+      "Signed data security agreement",
+      "Verified, controlled login access",
+      "Confirmation of how information will be safely stored"
+    ],
+    why: "Protects patient information before any data starts moving.",
+    workingOn: [
+      "Getting our systems ready to receive secure credentials as soon as they're granted"
+    ],
+    waitingOn: [
+      "Your signed data security agreement",
+      "AdvancedMD login access and office key"
+    ]
+  },
+  {
+    num: 2,
+    title: "Planning & Data Mapping",
+    status: "in-progress",
+    involves: [
+      "Identifying exactly which pieces of information are needed",
+      "Defining precisely how each metric (like collection rate) is calculated"
+    ],
+    why: "Keeps your numbers accurate and consistent from day one, not adjusted after the fact.",
+    workingOn: [
+      "Mapping the exact data fields your reports will draw from",
+      "Defining the calculation behind each key metric"
+    ],
+    waitingOn: [
+      "Billing team: does \"clean claim\" mean zero edits/rejections on the first pass (needs an extra data table), or is final submission status enough?",
+      "Billing team: how do you define \"service line\" for the discharge-to-bill lag metric?",
+      "Billing team: does \"contractual adjustment\" equal charge amount minus allowed amount, or is it tracked differently in your workflow?"
+    ]
+  },
+  {
+    num: 3,
+    title: "Connecting Your Systems",
+    status: "in-progress",
+    involves: [
+      "Establishing a secure, direct connection to your AdvancedMD system",
+      "Verifying the connection works reliably"
+    ],
+    why: "This is how information starts flowing safely into your reports.",
+    workingOn: [
+      "Your IT team has started building the two dedicated Windows Server 2022 boxes",
+      "Requested RDP + SSH access through your team's VPN once the servers are ready"
+    ],
+    waitingOn: [
+      "VPN account credentials from your IT team",
+      "Confirmation on whether the final licensed build lands on Server/SQL 2022 or 2019"
+    ]
+  },
+  {
+    num: 4,
+    title: "Building the Secure Data Pipeline",
+    status: "upcoming",
+    involves: [
+      "Setting up a private, secure environment for your data",
+      "Scheduling automatic, regular updates"
+    ],
+    why: "Keeps your dashboards current without manual work on your end.",
+    workingOn: [],
+    waitingOn: []
+  },
+  {
+    num: 5,
+    title: "Building Your Dashboards",
+    status: "upcoming",
+    involves: [
+      "Turning organized data into clear visual reports",
+      "Reviewing drafts together and refining based on your feedback"
+    ],
+    why: "This is where the numbers become something your team can actually use day-to-day.",
+    workingOn: [],
+    waitingOn: []
+  },
+  {
+    num: 6,
+    title: "Go-Live & Ongoing Support",
+    status: "upcoming",
+    involves: [
+      "Final testing and verification",
+      "Team training, if helpful",
+      "Ongoing monitoring after launch"
+    ],
+    why: "Ensures everything works reliably before — and after — your team starts relying on it.",
+    workingOn: [],
+    waitingOn: []
+  }
+];
+/* PHASES_END */
+
+const STATUS_ORDER = ["upcoming", "in-progress", "complete"];
+const STATUS_LABEL = { "upcoming": "Upcoming", "in-progress": "In Progress", "complete": "Complete" };
+const STATUS_FILL = { "upcoming": "0%", "in-progress": "50%", "complete": "100%" };
+
+const phaseList = document.getElementById('phase-list');
+const progressTrack = document.getElementById('progress-track');
+const progressCount = document.getElementById('progress-count');
+
+function checkmarkSvg() {
+  return '<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M5 10.5L8.5 14L15 6.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+function renderProgress() {
+  const completeCount = phases.filter(p => p.status === 'complete').length;
+  const inProgressCount = phases.filter(p => p.status === 'in-progress').length;
+  let label = `${completeCount} of ${phases.length} phases complete`;
+  if (inProgressCount > 0) label += `, ${inProgressCount} in progress`;
+  progressCount.textContent = label;
+
+  progressTrack.innerHTML = phases.map(p =>
+    `<div class="progress-seg"><div class="fill" style="width:${STATUS_FILL[p.status]}"></div></div>`
+  ).join('');
+}
+
+function getOpenIndex() {
+  const openBtn = phaseList.querySelector('.phase-btn[aria-expanded="true"]');
+  if (!openBtn) return -1;
+  return Array.from(phaseList.querySelectorAll('.phase-btn')).indexOf(openBtn);
+}
+
+function renderPhases(preserveOpenIndex) {
+  const editable = document.body.classList.contains('edit-mode');
+  phaseList.innerHTML = '';
+  phases.forEach((p, i) => {
+    const phaseEl = document.createElement('div');
+    phaseEl.className = 'phase ' + p.status;
+
+    const involvesItems = p.involves.map(item => `<li>${item}</li>`).join('');
+    const panelId = 'panel-' + p.num;
+    const isOpen = preserveOpenIndex === i;
+    const nodeContent = p.status === 'complete' ? checkmarkSvg() : p.num;
+
+    const workingOnBlock = (p.workingOn && p.workingOn.length) ? `
+              <div class="panel-section">
+                <div class="panel-label">What we're working on now</div>
+                <ul class="panel-list">${p.workingOn.map(item => `<li>${item}</li>`).join('')}</ul>
+              </div>` : '';
+
+    const waitingOnBlock = (p.waitingOn && p.waitingOn.length) ? `
+              <div class="panel-section waiting-box">
+                <div class="panel-label">What we're waiting on from you</div>
+                <ul class="panel-list">${p.waitingOn.map(item => `<li>${item}</li>`).join('')}</ul>
+              </div>` : '';
+
+    phaseEl.innerHTML = `
+      <div class="rail">
+        <div class="node">${nodeContent}</div>
+        <div class="connector"></div>
+      </div>
+      <div class="card">
+        <button class="phase-btn" aria-expanded="${isOpen ? 'true' : 'false'}" aria-controls="${panelId}">
+          <div class="title-row">
+            <span class="phase-title">${p.title}</span>
+            <span class="chip ${p.status}" data-phase-index="${i}" role="button" tabindex="${editable ? '0' : '-1'}">${STATUS_LABEL[p.status]}</span>
+          </div>
+          <svg class="chevron" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="panel" id="${panelId}">
+          <div class="panel-inner">
+            <div class="panel-content">
+              <div class="panel-section">
+                <div class="panel-label">What this involves</div>
+                <ul class="panel-list">${involvesItems}</ul>
+              </div>
+              <div class="panel-section">
+                <div class="panel-label">Why it matters</div>
+                <p class="panel-why">${p.why}</p>
+              </div>${workingOnBlock}${waitingOnBlock}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    phaseList.appendChild(phaseEl);
+  });
+}
+
+function renderAll(preserveOpenIndex) {
+  renderProgress();
+  renderPhases(preserveOpenIndex);
+}
+
+// Accordion + status-chip clicks
+phaseList.addEventListener('click', (e) => {
+  const chip = e.target.closest('.chip');
+  if (chip && document.body.classList.contains('edit-mode')) {
+    const idx = parseInt(chip.dataset.phaseIndex, 10);
+    const currentIdx = STATUS_ORDER.indexOf(phases[idx].status);
+    phases[idx].status = STATUS_ORDER[(currentIdx + 1) % STATUS_ORDER.length];
+    renderAll(idx);
+    return;
+  }
+  const btn = e.target.closest('.phase-btn');
+  if (!btn) return;
+  const wasOpen = btn.getAttribute('aria-expanded') === 'true';
+  Array.from(phaseList.querySelectorAll('.phase-btn')).forEach(b => b.setAttribute('aria-expanded', 'false'));
+  btn.setAttribute('aria-expanded', wasOpen ? 'false' : 'true');
+});
+
+// Keyboard support for the status chip (it's a span, not a native button)
+phaseList.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('chip')) {
+    e.preventDefault();
+    e.target.click();
+  }
+});
+
+// Edit mode toggle -- asks for the edit token once per session, since
+// saving changes now writes live for every viewer, not just exporting a
+// local file.
+const adminToggle = document.getElementById('admin-toggle');
+const adminToggleLabel = document.getElementById('admin-toggle-label');
+const saveStatus = document.getElementById('save-status');
+let editToken = null;
+
+adminToggle.addEventListener('click', () => {
+  const turningOn = !document.body.classList.contains('edit-mode');
+  if (turningOn && !editToken) {
+    const entered = prompt('Enter the edit password:');
+    if (!entered) return;
+    editToken = entered;
+  }
+  const on = document.body.classList.toggle('edit-mode');
+  adminToggleLabel.textContent = on ? 'Done updating' : 'Update project status';
+  saveStatus.textContent = '';
+  saveStatus.className = 'save-status';
+  renderPhases(getOpenIndex());
+});
+
+// Save the current state to the backend (Cloudflare KV via the /api/status
+// Pages Function) so it's live for anyone viewing this page -- no file
+// export, no re-upload.
+document.getElementById('save-btn').addEventListener('click', async () => {
+  saveStatus.textContent = 'Saving...';
+  saveStatus.className = 'save-status';
+  try {
+    const resp = await fetch('/api/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Edit-Token': editToken || '' },
+      body: JSON.stringify({ phases }),
+    });
+    if (resp.status === 401) {
+      saveStatus.textContent = 'Wrong password -- click "Update project status" again to re-enter it.';
+      saveStatus.className = 'save-status err';
+      editToken = null;
+      return;
+    }
+    if (!resp.ok) throw new Error('Save failed');
+    saveStatus.textContent = 'Saved -- live for anyone viewing this page.';
+    saveStatus.className = 'save-status ok';
+  } catch (err) {
+    saveStatus.textContent = 'Could not save (are you viewing this on the hosted Cloudflare page, not a local file?).';
+    saveStatus.className = 'save-status err';
+  }
+});
+
+// On load, pull the current saved state from the backend so every viewer
+// sees the latest status, not just whatever was baked in when this file
+// was last uploaded. Falls back to the defaults above if nothing's been
+// saved yet, or if this is being viewed as a local file (no backend).
+async function loadSavedState() {
+  try {
+    const resp = await fetch('/api/status');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    if (data.phases && Array.isArray(data.phases)) {
+      data.phases.forEach((saved, i) => {
+        if (phases[i]) phases[i].status = saved.status;
+      });
+      renderAll(0);
+    }
+  } catch (err) {
+    // Local file or network issue -- silently keep the built-in defaults.
+  }
+}
+
+// Initial render + progress bar entrance animation
+let didInitialAnimation = false;
+renderAll(0);
+loadSavedState();
+window.addEventListener('DOMContentLoaded', () => {
+  if (didInitialAnimation) return;
+  didInitialAnimation = true;
+  const fills = Array.from(document.querySelectorAll('.progress-seg .fill'));
+  const targets = fills.map(el => el.style.width);
+  fills.forEach(el => el.style.width = '0%');
+  requestAnimationFrame(() => {
+    fills.forEach((el, i) => { el.style.width = targets[i]; });
+  });
+});
+</script>
+</body>
+</html>
